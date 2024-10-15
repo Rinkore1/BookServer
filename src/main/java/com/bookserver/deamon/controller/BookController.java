@@ -1,7 +1,7 @@
 package com.bookserver.deamon.controller;
 
-import com.bookserver.repository.BookRepository;
-import com.bookserver.model.Book;
+import com.bookserver.deamon.repository.BookRepository;
+import com.bookserver.deamon.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

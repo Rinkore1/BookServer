@@ -1,4 +1,4 @@
-package com.bookserver.model;
+package com.bookserver.deamon.model;
 
 public class User {
     private String id;

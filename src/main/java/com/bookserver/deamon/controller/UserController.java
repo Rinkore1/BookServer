@@ -1,13 +1,13 @@
-package com.bookserver.controller;
+package com.bookserver.deamon.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.bookserver.model.User;
+import com.bookserver.deamon.model.User;
 
-import main.java.com.bookserver.service.UserService;
+import com.bookserver.deamon.service.UserService;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;

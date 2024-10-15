@@ -1,11 +1,11 @@
-package com.bookserver.service;
+package com.bookserver.deamon.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import com.bookserver.model.User;
-import com.bookserver.repository.UserRepository;
+import com.bookserver.deamon.model.User;
+import com.bookserver.deamon.repository.UserRepository;
 
 @Sercice
 public class UserService {
