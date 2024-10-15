@@ -1,4 +1,4 @@
-package com.bookserver.repository;
+package com.bookserver.deamon.repository;
 
 import com.bookserver.model.Book;
 import org.springframework.data.mongodb.repository.MongoRepository;

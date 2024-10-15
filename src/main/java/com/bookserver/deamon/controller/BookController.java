@@ -1,4 +1,4 @@
-package com.bookserver.controller;
+package com.bookserver.deamon.controller;
 
 import com.bookserver.repository.BookRepository;
 import com.bookserver.model.Book;
