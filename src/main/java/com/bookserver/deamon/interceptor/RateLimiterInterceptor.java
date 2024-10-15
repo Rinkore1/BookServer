@@ -8,6 +8,10 @@ import com.bookserver.deamon.util.RateLimiter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * 拦截器类，用于限制客户端的请求速率。
+ * 该拦截器使用 {@link RateLimiter} 来限制每个客户端在指定时间窗口内的请求次数。
+ */
 @Component
 public class RateLimiterInterceptor implements HandlerInterceptor {
 
@@ -18,6 +22,16 @@ public class RateLimiterInterceptor implements HandlerInterceptor {
     private static final int REQUEST_LIMIT = 100;
     private static final int TIME_WINDOW_SECONDS = 60;
 
+    /**
+     * 在请求处理之前调用的方法。
+     * 该方法检查客户端的请求是否超过了限制的次数，如果超过，则返回 HTTP 429 状态码。
+     *
+     * @param request  当前的 HTTP 请求
+     * @param response 当前的 HTTP 响应
+     * @param handler  处理器对象
+     * @return 如果请求被允许则返回 true，否则返回 false
+     * @throws Exception 如果在处理请求时发生错误
+     */
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         String clientIp = request.getRemoteAddr(); // 获取客户端 IP
