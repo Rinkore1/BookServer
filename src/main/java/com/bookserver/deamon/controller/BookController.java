@@ -1,7 +1,7 @@
-package main.java.com.bookserver.controller;
+package com.bookserver.controller;
 
-import main.java.com.bookserver.repository.BookRepository;
-import main.java.com.bookserver.model.Book;
+import com.bookserver.repository.BookRepository;
+import com.bookserver.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

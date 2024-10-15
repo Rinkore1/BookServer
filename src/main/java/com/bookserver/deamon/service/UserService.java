@@ -1,4 +1,4 @@
-package main.java.com.bookserver.service;
+package com.bookserver.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
