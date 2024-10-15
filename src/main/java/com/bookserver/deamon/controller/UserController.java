@@ -1,7 +1,6 @@
 package com.bookserver.deamon.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,38 +8,39 @@ import com.bookserver.deamon.model.User;
 
 import com.bookserver.deamon.service.UserService;
 
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private StringRedisTemplate redisTemplate;
-
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
-        userService.register(user);
-        return ResponseEntity.ok("User registered successfully.");
+        User registeredUser = userService.register(user);
+        if (registeredUser != null) {
+            return ResponseEntity.ok("User registered successfully.");
+        }
+        return ResponseEntity.badRequest().body("Registration failed.");
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
-        User user = userService.login(username, password);
-        if (user != null) {
-            String token = UUID.randomUUID().toString();
-            redisTemplate.opsForValue().set(token, user.getId(), 30, TimeUnit.MINUTES);
+        String token = userService.login(username, password);
+        if (token != null) {
             return ResponseEntity.ok(token);
         }
         return ResponseEntity.status(401).body("Invalid credentials.");
     }
 
-    @GetMapping("/logout")
+    @GetMapping("/validate")
+    public ResponseEntity<Boolean> validateToken(@RequestHeader("Authorization") String token) {
+        boolean isValid = userService.validateToken(token);
+        return ResponseEntity.ok(isValid);
+    }
+
+    @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestHeader("Authorization") String token) {
-        redisTemplate.delete(token);
+        userService.logout(token);
         return ResponseEntity.ok("Logged out successfully.");
     }
 }
