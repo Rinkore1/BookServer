@@ -1,5 +1,7 @@
 spring:
   data:
+    mongodb:
+      uri: mongodb://localhost:27017/your_db_name
     redis:
       host: localhost
       port: 6379
