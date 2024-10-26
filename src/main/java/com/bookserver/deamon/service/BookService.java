@@ -1,6 +1,9 @@
 package com.bookserver.deamon.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
@@ -28,6 +31,18 @@ public class BookService {
     }
 
     /**
+     * 获取分页的书籍列表。
+     *
+     * @param page 页码，从0开始。
+     * @param size 每页的书籍数量。
+     * @return 包含书籍的分页对象。
+     */
+    public Page<Book> getBooksPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return bookRepository.findAll(pageable);
+    }
+
+    /**
      * 根据 ID 获取书籍。
      * 使用 Resilience4j 的 CircuitBreaker 进行断路保护。
      *
@@ -52,7 +67,7 @@ public class BookService {
     /**
      * 更新书籍信息。
      *
-     * @param id 书籍 ID
+     * @param id   书籍 ID
      * @param book 更新后的书籍信息
      * @return 更新后的书籍，如果 ID 不存在则返回 null
      */
@@ -87,7 +102,7 @@ public class BookService {
      * 根据 ID 获取书籍的回退方法。
      *
      * @param id 书籍 ID
-     * @param t 触发回退的异常
+     * @param t  触发回退的异常
      * @return 空的 Optional 对象
      */
     public Optional<Book> getBookByIdFallback(String id, Throwable t) {

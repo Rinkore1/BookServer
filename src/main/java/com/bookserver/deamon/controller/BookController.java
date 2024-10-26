@@ -4,10 +4,11 @@ import com.bookserver.deamon.service.BookService;
 import com.bookserver.deamon.model.Book;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+// import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,9 +25,23 @@ public class BookController {
      *
      * @return 包含所有书籍的响应实体。
      */
+    // @GetMapping
+    // public ResponseEntity<List<Book>> getAllBooks() {
+    // return ResponseEntity.ok(bookService.getAllBooks());
+    // }
+
+    /**
+     * 获取分页的书籍列表。
+     *
+     * @param page 页码，从0开始，默认为0。
+     * @param size 每页的书籍数量，默认为10。
+     * @return 包含书籍的分页对象的响应实体。
+     */
     @GetMapping
-    public ResponseEntity<List<Book>> getAllBooks() {
-        return ResponseEntity.ok(bookService.getAllBooks());
+    public ResponseEntity<Page<Book>> getBooksPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(bookService.getBooksPaginated(page, size));
     }
 
     /**

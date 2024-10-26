@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  app:
+    image: openjdk:17-jdk  # 使用 OpenJDK 17 基础镜像
+    container_name: BookServer
+    build:
+      context: .  # 指向 Dockerfile 所在目录
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/mydatabase # MongoDB 数据库连接地址
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+    ports:
+      - "8080:8080"  # 将应用程序的 8080 端口映射到主机
+    depends_on:
+      - mongodb
+      - redis
+    command: bash -c "./gradlew build && java -jar build/libs/BookServer.jar"  # 确保构建并运行应用
+    volumes:
+      - .:/app  # 将应用代码挂载到容器中
+
+  mongodb:
+    image: mongo:5.0  # MongoDB 5.0 镜像
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db  # 使用卷来持久化数据库
+
+  redis:
+    image: redis:7.0  # Redis 7.0 镜像
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data  # 使用卷来持久化缓存数据
+
+volumes:
+  mongo_data:  # 持久化 MongoDB 数据
+  redis_data:  # 持久化 Redis 数据
