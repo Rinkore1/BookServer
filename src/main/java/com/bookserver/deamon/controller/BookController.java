@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-// import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,18 +16,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
+
     @Autowired
     private BookService bookService;
-
-    /**
-     * 获取所有书籍。
-     *
-     * @return 包含所有书籍的响应实体。
-     */
-    // @GetMapping
-    // public ResponseEntity<List<Book>> getAllBooks() {
-    // return ResponseEntity.ok(bookService.getAllBooks());
-    // }
 
     /**
      * 获取分页的书籍列表。
@@ -64,7 +54,11 @@ public class BookController {
      */
     @PostMapping
     public ResponseEntity<Book> addBook(@RequestBody Book book) {
-        return ResponseEntity.ok(bookService.addBook(book));
+        Book createdBook = bookService.addBook(book);
+        if (createdBook != null) {
+            return ResponseEntity.ok(createdBook);
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     /**
@@ -91,7 +85,9 @@ public class BookController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable String id) {
-        bookService.deleteBook(id);
-        return ResponseEntity.ok().build();
+        if (bookService.deleteBook(id)) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

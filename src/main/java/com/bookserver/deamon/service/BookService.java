@@ -16,19 +16,9 @@ import java.util.Collections;
 
 @Service
 public class BookService {
+
     @Autowired
     private BookRepository bookRepository;
-
-    /**
-     * 获取所有书籍。
-     * 使用 Resilience4j 的 CircuitBreaker 进行断路保护。
-     *
-     * @return 书籍列表
-     */
-    @CircuitBreaker(name = "bookServiceCircuitBreaker", fallbackMethod = "getAllBooksFallback")
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
-    }
 
     /**
      * 获取分页的书籍列表。
@@ -44,7 +34,6 @@ public class BookService {
 
     /**
      * 根据 ID 获取书籍。
-     * 使用 Resilience4j 的 CircuitBreaker 进行断路保护。
      *
      * @param id 书籍 ID
      * @return 包含书籍的 Optional 对象
@@ -61,7 +50,12 @@ public class BookService {
      * @return 保存后的书籍
      */
     public Book addBook(Book book) {
-        return bookRepository.save(book);
+        try {
+            return bookRepository.save(book);
+        } catch (Exception e) {
+            // 可以记录日志或处理异常
+            return null;
+        }
     }
 
     /**
@@ -83,9 +77,14 @@ public class BookService {
      * 根据 ID 删除书籍。
      *
      * @param id 书籍 ID
+     * @return 如果成功删除返回 true，否则返回 false
      */
-    public void deleteBook(String id) {
-        bookRepository.deleteById(id);
+    public boolean deleteBook(String id) {
+        if (bookRepository.existsById(id)) {
+            bookRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     /**
