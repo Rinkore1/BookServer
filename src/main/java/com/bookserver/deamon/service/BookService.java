@@ -115,7 +115,8 @@ public class BookService {
 
     // 热门书籍推荐（按受欢迎度排序）
     public List<Book> getTopBooks(int size) {
-        Pageable pageable = PageRequest.of(0, size);
+        // 创建分页请求，按 popularity 降序排序
+        Pageable pageable = PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "popularity"));
         return bookRepository.findTopBooks(pageable);
     }
 
