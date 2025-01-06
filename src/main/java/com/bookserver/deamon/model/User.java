@@ -10,6 +10,8 @@ public class User {
     private String username;
     private String password;
     private String email;
+    // TODO: 添加用户偏好字段
+    // private List<String> preferences;
 
     public String getId() {
         return id;
@@ -42,4 +44,12 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    // public List<String> getPreferences() {
+    //     return preferences;
+    // }
+
+    // public void setPreferences(List<String> preferences) {
+    //     this.preferences = preferences;
+    // }
 }

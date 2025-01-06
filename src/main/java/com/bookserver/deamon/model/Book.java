@@ -14,6 +14,7 @@ public class Book {
     private String description;
     private double price;
     private int stock;
+    private int popularity;
 
     public String getId() {
         return id;
@@ -61,5 +62,13 @@ public class Book {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public int getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(int popularity) {
+        this.popularity = popularity;
     }
 }

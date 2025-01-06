@@ -11,8 +11,13 @@ import com.bookserver.deamon.model.Book;
 import com.bookserver.deamon.repository.BookRepository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 
 @Service
 public class BookService {
@@ -106,5 +111,54 @@ public class BookService {
      */
     public Optional<Book> getBookByIdFallback(String id, Throwable t) {
         return Optional.empty(); // 返回空结果
+    }
+
+    // 热门书籍推荐（按受欢迎度排序）
+    public List<Book> getTopBooks(int size) {
+        Pageable pageable = PageRequest.of(0, size);
+        return bookRepository.findTopBooks(pageable);
+    }
+
+    // 随机推荐书籍
+    public List<Book> getRandomBooks(int size) {
+        List<Book> allBooks = bookRepository.findAll();
+        Random random = new Random();
+        return allBooks.stream()
+                .sorted((o1, o2) -> random.nextInt(2) - 1) // 随机排序
+                .limit(size)
+                .collect(Collectors.toList());
+    }
+
+    // 基于用户偏好的书籍推荐
+    public List<Book> getUserRecommendedBooks(String userId, int size) {
+        // 模拟用户偏好数据：在实际系统中，这应该从用户行为记录中获取
+        // TODO: 从用户行为记录中获取用户偏好数据
+        Map<String, List<String>> userPreferences = getUserPreferences();
+
+        // 获取用户偏好的作者或关键词
+        List<String> preferences = userPreferences.getOrDefault(userId, List.of());
+
+        // 从数据库中查找符合偏好条件的书籍
+        List<Book> preferredBooks = preferences.stream()
+                .flatMap(preference -> bookRepository.findByTitleContainingIgnoreCase(preference).stream())
+                .collect(Collectors.toList());
+
+        // 如果偏好书籍不足，补充随机书籍
+        if (preferredBooks.size() < size) {
+            List<Book> randomBooks = getRandomBooks(size - preferredBooks.size());
+            preferredBooks.addAll(randomBooks);
+        }
+
+        // 返回限定数量的书籍
+        return preferredBooks.stream().limit(size).collect(Collectors.toList());
+    }
+
+    // 模拟用户偏好数据
+    // TODO: 从用户行为记录中获取用户偏好数据
+    private Map<String, List<String>> getUserPreferences() {
+        Map<String, List<String>> preferences = new HashMap<>();
+        preferences.put("user1", Arrays.asList("Java", "Spring"));
+        preferences.put("user2", Arrays.asList("Python", "Machine Learning"));
+        return preferences;
     }
 }

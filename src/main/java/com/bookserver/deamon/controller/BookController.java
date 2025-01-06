@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -89,5 +90,27 @@ public class BookController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    // 热门书籍推荐
+    @GetMapping("/recommend/top")
+    public ResponseEntity<List<Book>> getTopBooks(
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(bookService.getTopBooks(size));
+    }
+
+    // 随机推荐书籍
+    @GetMapping("/recommend/random")
+    public ResponseEntity<List<Book>> getRandomBooks(
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(bookService.getRandomBooks(size));
+    }
+
+    // 基于用户偏好的书籍推荐
+    @GetMapping("/recommend/user/{userId}")
+    public ResponseEntity<List<Book>> getUserRecommendedBooks(
+            @PathVariable String userId,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(bookService.getUserRecommendedBooks(userId, size));
     }
 }
