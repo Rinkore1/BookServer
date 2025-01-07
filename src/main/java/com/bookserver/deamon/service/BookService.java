@@ -185,12 +185,15 @@ public class BookService {
     }
 
     /**
-     * 按关键词搜索书籍
+     * 按关键词分页搜索书籍
      *
      * @param keyword 搜索关键字
-     * @return 包含搜索结果书籍列表
+     * @param page    页码，从0开始
+     * @param size    每页的书籍数量
+     * @return 包含搜索结果书籍的分页对象
      */
-    public List<Book> searchBooks(String keyword) {
-        return bookRepository.findByTitleContainingIgnoreCase(keyword);
+    public Page<Book> searchBooksPaginated(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return bookRepository.findByTitleContainingIgnoreCase(keyword, pageable);
     }
 }

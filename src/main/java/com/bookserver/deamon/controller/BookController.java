@@ -122,14 +122,18 @@ public class BookController {
     }
 
     /**
-     * 搜索书籍
+     * 按关键词分页搜索书籍
      *
      * @param keyword 搜索关键字
-     * @return 包含搜索结果书籍列表的 ResponseEntity
+     * @param page 页码，从0开始，默认为0
+     * @param size 每页的书籍数量，默认为10
+     * @return 包含搜索结果书籍的分页对象的响应实体
      */
     @GetMapping("/search")
-    public ResponseEntity<List<Book>> searchBooks(
-            @RequestParam String keyword) {
-        return ResponseEntity.ok(bookService.searchBooks(keyword));
+    public ResponseEntity<Page<Book>> searchBooksPaginated(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(bookService.searchBooksPaginated(keyword, page, size));
     }
 }
