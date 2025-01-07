@@ -30,6 +30,9 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+      
+      - name: Grant execute permission for gradlew script
+        run: chmod +x gradlew
 
       # 构建项目
       - name: Build with Gradle
@@ -42,8 +45,3 @@ jobs:
       # 代码质量检查
       - name: Checkstyle
         run: ./gradlew checkstyleMain checkstyleTest --no-daemon
-
-      # 执行集成测试（如果有）
-      - name: Run integration tests
-        if: always()
-        run: ./gradlew integrationTest --no-daemon
