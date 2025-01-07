@@ -22,6 +22,7 @@ public class BookController {
 
     @Autowired
     private BookService bookService;
+    @Autowired
     private UserService userService;
 
     /**
