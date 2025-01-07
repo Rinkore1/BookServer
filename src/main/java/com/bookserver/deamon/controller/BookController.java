@@ -113,4 +113,11 @@ public class BookController {
             @RequestParam(defaultValue = "10") int size) {
         return ResponseEntity.ok(bookService.getUserRecommendedBooks(userId, size));
     }
+
+    // 搜索书籍
+    @GetMapping("/search")
+    public ResponseEntity<List<Book>> searchBooks(
+            @RequestParam String keyword) {
+        return ResponseEntity.ok(bookService.searchBooks(keyword));
+    }
 }

@@ -163,4 +163,9 @@ public class BookService {
         preferences.put("user2", Arrays.asList("Python", "Machine Learning"));
         return preferences;
     }
+
+    // 按关键词搜索书籍
+    public List<Book> searchBooks(String keyword) {
+        return bookRepository.findByTitleContainingIgnoreCase(keyword);
+    }
 }
