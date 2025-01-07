@@ -52,8 +52,8 @@ resilience4j:
 
 ```bash
 
-git clone https://github.com/yourusername/yourproject.git
-cd yourproject
+git clone https://github.com/Rinkore1/BookServer.git
+cd BookServer
 ```
 2. 构建项目
 
@@ -84,6 +84,13 @@ cd yourproject
         添加书籍: `POST /api/books`
         更新书籍: `PUT /api/books/{id}`
         删除书籍: `DELETE /api/books/{id}`
+    书籍推荐:
+        随机推荐: `GET /api/books/recommend/random`
+        热门推荐: `GET  /api/books/recommend/top`
+        用户偏好的推荐: `GET /api/books/recommend/user`
+    书籍搜索: `GET /api/books/search`
+
+> 注意: 填写 `Authorization` 头和其他参数
 
 5. 熔断机制测试
 
@@ -91,6 +98,11 @@ cd yourproject
 
     模拟故障：暂停 MongoDB 服务或在 getAllBooks() 中添加延迟。
     触发熔断器：当故障率达到配置的 50% 时，熔断器会自动切换到回退方法，并返回空结果。
+
+6. CORS
+
+如果有该需求，请修改 `application.properties` 中的 `cors`
+默认允许所有方法和所有来源
 
 ## 目录结构
 
@@ -108,7 +120,7 @@ src
 │       ├── application.yml # 配置文件
 └── test
     └── java
-        └── com.example.demo # 单元测试
+        └── com.bookserver.deamon # 单元测试
 ```
 ## 注意事项
 
