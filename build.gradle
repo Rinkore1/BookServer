@@ -15,7 +15,8 @@ java {
 }
 
 checkstyle {
-    toolVersion = '8.44'
+    toolVersion = '8.20'
+    configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
 }
 
 repositories {
