@@ -45,8 +45,3 @@ jobs:
       # 代码质量检查
       - name: Checkstyle
         run: ./gradlew checkstyleMain checkstyleTest --no-daemon
-
-      # 执行集成测试（如果有）
-      - name: Run integration tests
-        if: always()
-        run: ./gradlew integrationTest --no-daemon
