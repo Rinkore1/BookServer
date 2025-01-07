@@ -114,14 +114,24 @@ public class BookService {
         return Optional.empty(); // 返回空结果
     }
 
-    // 热门书籍推荐（按受欢迎度排序）
+    /**
+     * 热门书籍推荐（按受欢迎度排序）
+     *
+     * @param size 推荐书籍的数量
+     * @return 包含推荐书籍列表
+     */
     public List<Book> getTopBooks(int size) {
         // 创建分页请求，按 popularity 降序排序
         Pageable pageable = PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "popularity"));
         return bookRepository.findTopBooks(pageable);
     }
 
-    // 随机推荐书籍
+    /**
+     * 随机推荐书籍
+     *
+     * @param size 推荐书籍的数量
+     * @return 包含随机推荐书籍列表
+     */
     public List<Book> getRandomBooks(int size) {
         List<Book> allBooks = bookRepository.findAll();
         Random random = new Random();
@@ -131,7 +141,13 @@ public class BookService {
                 .collect(Collectors.toList());
     }
 
-    // 基于用户偏好的书籍推荐
+    /**
+     * 基于用户偏好的书籍推荐
+     *
+     * @param userId 用户ID
+     * @param size   推荐书籍的数量
+     * @return 包含基于用户偏好的推荐书籍列表
+     */
     public List<Book> getUserRecommendedBooks(String userId, int size) {
         // 模拟用户偏好数据：在实际系统中，这应该从用户行为记录中获取
         // TODO: 从用户行为记录中获取用户偏好数据
@@ -155,8 +171,12 @@ public class BookService {
         return preferredBooks.stream().limit(size).collect(Collectors.toList());
     }
 
-    // 模拟用户偏好数据
-    // TODO: 从用户行为记录中获取用户偏好数据
+    /**
+     * 模拟用户偏好数据
+     * TODO: 从用户行为记录中获取用户偏好数据
+     *
+     * @return 用户偏好数据的映射
+     */
     private Map<String, List<String>> getUserPreferences() {
         Map<String, List<String>> preferences = new HashMap<>();
         preferences.put("user1", Arrays.asList("Java", "Spring"));
@@ -164,7 +184,12 @@ public class BookService {
         return preferences;
     }
 
-    // 按关键词搜索书籍
+    /**
+     * 按关键词搜索书籍
+     *
+     * @param keyword 搜索关键字
+     * @return 包含搜索结果书籍列表
+     */
     public List<Book> searchBooks(String keyword) {
         return bookRepository.findByTitleContainingIgnoreCase(keyword);
     }

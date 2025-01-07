@@ -82,34 +82,36 @@ public class BookController {
     }
 
     /**
-     * 删除书籍。
+     * 热门书籍推荐
      *
-     * @param id 要删除的书籍的 ID。
-     * @return 空的响应实体。
+     * @param size 推荐书籍的数量，默认为10
+     * @return 包含推荐书籍列表的 ResponseEntity
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBook(@PathVariable String id) {
-        if (bookService.deleteBook(id)) {
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    // 热门书籍推荐
     @GetMapping("/recommend/top")
     public ResponseEntity<List<Book>> getTopBooks(
             @RequestParam(defaultValue = "10") int size) {
         return ResponseEntity.ok(bookService.getTopBooks(size));
     }
 
-    // 随机推荐书籍
+    /**
+     * 随机推荐书籍
+     *
+     * @param size 推荐书籍的数量，默认为10
+     * @return 包含随机推荐书籍列表的 ResponseEntity
+     */
     @GetMapping("/recommend/random")
     public ResponseEntity<List<Book>> getRandomBooks(
             @RequestParam(defaultValue = "10") int size) {
         return ResponseEntity.ok(bookService.getRandomBooks(size));
     }
 
-    // 基于用户偏好的书籍推荐
+    /**
+     * 基于用户偏好的书籍推荐
+     *
+     * @param token 用户的授权令牌
+     * @param size  推荐书籍的数量，默认为10
+     * @return 包含基于用户偏好的推荐书籍列表的 ResponseEntity
+     */
     @GetMapping("/recommend/user")
     public ResponseEntity<List<Book>> getUserRecommendedBooks(
             @RequestHeader("Authorization") String token,
@@ -118,7 +120,12 @@ public class BookController {
         return ResponseEntity.ok(bookService.getUserRecommendedBooks(userId, size));
     }
 
-    // 搜索书籍
+    /**
+     * 搜索书籍
+     *
+     * @param keyword 搜索关键字
+     * @return 包含搜索结果书籍列表的 ResponseEntity
+     */
     @GetMapping("/search")
     public ResponseEntity<List<Book>> searchBooks(
             @RequestParam String keyword) {

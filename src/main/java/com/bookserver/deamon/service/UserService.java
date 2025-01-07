@@ -70,7 +70,12 @@ public class UserService {
         redisTemplate.delete(token);
     }
 
-    // 从 Token 中解析 userId
+    /**
+     * 从 Token 中解析 userId
+     *
+     * @param token 用户的授权令牌
+     * @return 解析出的用户ID
+     */
     public String getUserIdFromToken(String token) {
         return redisTemplate.opsForValue().get(token);
     }
