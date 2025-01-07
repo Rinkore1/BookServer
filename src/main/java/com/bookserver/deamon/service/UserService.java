@@ -70,4 +70,9 @@ public class UserService {
         redisTemplate.delete(token);
     }
 
+    // 从 Token 中解析 userId
+    public String getUserIdFromToken(String token) {
+        return redisTemplate.opsForValue().get(token);
+    }
+
 }

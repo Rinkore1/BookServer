@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+import com.bookserver.deamon.service.UserService;
+
 /**
  * 控制器类，用于处理与书籍相关的 HTTP 请求。
  */
@@ -20,6 +22,7 @@ public class BookController {
 
     @Autowired
     private BookService bookService;
+    private UserService userService;
 
     /**
      * 获取分页的书籍列表。
@@ -107,10 +110,11 @@ public class BookController {
     }
 
     // 基于用户偏好的书籍推荐
-    @GetMapping("/recommend/user/{userId}")
+    @GetMapping("/recommend/user")
     public ResponseEntity<List<Book>> getUserRecommendedBooks(
-            @PathVariable String userId,
+            @RequestHeader("Authorization") String token,
             @RequestParam(defaultValue = "10") int size) {
+        String userId = userService.getUserIdFromToken(token);
         return ResponseEntity.ok(bookService.getUserRecommendedBooks(userId, size));
     }
 
